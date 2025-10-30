@@ -1,0 +1,115 @@
+@page
+<style>
+    .card-link {
+        text-decoration: none;
+        color: inherit;
+    }
+    .card-link .card {
+        transition: transform .2s;
+    }
+    .card-link:hover .card {
+        transform: scale(1.02);
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    }
+</style>
+@model StudentEventManagement.Pages.EventHomeModel
+@{
+    ViewData["Title"] = "Event Management Home";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-4">Event Management System</h1>
+            <p class="lead">Welcome, @Model.FullName!</p>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">User Profile</h5>
+                    <p><strong>Name:</strong> @Model.FullName</p>
+                    <p><strong>Email:</strong> @Model.Email</p>
+                    <p><strong>Mobile:</strong> @Model.MobileNumber</p>
+                    <p><strong>Role:</strong> @Model.Role</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Quick Actions</h5>
+                    @if (Model.Role == "Admin")
+                    {
+                        <a href="/Events/Create" class="btn btn-primary mb-2">Create New Event</a><br>
+                        <a href="/Events/Index" class="btn btn-info mb-2">Manage All Events</a><br>
+                    }
+                    <a href="/Events/Index" class="btn btn-success mb-2">View Events</a><br>
+                    <a href="/Account/Logout" class="btn btn-outline-danger">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <form method="get">
+                <div class="form-row align-items-center">
+                    <div class="col-auto">
+                        <label class="mr-sm-2" for="SelectedCategoryId">Filter by Category</label>
+                        <select class="custom-select mr-sm-2" asp-for="SelectedCategoryId" asp-items="Model.AllCategories">
+                            <option value="">All</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary mt-4">Filter</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <h3>Upcoming Events</h3>
+            @if (Model.Events != null && Model.Events.Any())
+            {
+                <div class="row">
+                    @foreach (var eventItem in Model.Events)
+                    {
+                        <div class="col-md-4 mb-3">
+                            <a asp-page="/Events/Details" asp-route-id="@eventItem.Id" class="card-link">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        @if (!string.IsNullOrEmpty(eventItem.ImageUrl))
+                                        {
+                                            <img src="@eventItem.ImageUrl" class="card-img-top mb-2" alt="@eventItem.Title" style="height: 180px; object-fit: cover;">
+                                        }
+                                        <h5 class="card-title">@eventItem.Title</h5>
+                                        <p class="card-text">@eventItem.Description</p>
+                                        <p class="text-muted">
+                                            <i class="fas fa-calendar"></i> @eventItem.Date.ToString("MMM dd, yyyy")
+                                            <br>
+                                            <i class="fas fa-clock"></i> @eventItem.Date.ToString("HH:mm")
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                </div>
+                <div class="text-center mt-3">
+                    <a href="/Events/Index" class="btn btn-outline-primary">View All Events</a>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> No upcoming events at the moment.
+                </div>
+            }
+        </div>
+    </div>
+</div>

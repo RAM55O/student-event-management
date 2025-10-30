@@ -1,0 +1,22 @@
+@page
+@model StudentEventManagement.Pages.Events.CreateModel
+
+<h1>Create New Event</h1>
+
+<form method="post">
+    <div>
+        <label asp-for="Input.Title"></label>
+        <input asp-for="Input.Title" />
+    </div>
+    <div>
+        <label asp-for="Input.Description"></label>
+        <textarea asp-for="Input.Description"></textarea>
+    </div>
+    <div>
+        <label asp-for="Input.Date"></label>
+        <input asp-for="Input.Date" type="datetime-local" />
+    </div>
+    <button type="submit">Create</button>
+</form>
+
+<p><a href="/Events/Index">Back to Events</a></p>

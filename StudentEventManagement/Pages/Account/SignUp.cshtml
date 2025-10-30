@@ -1,0 +1,50 @@
+@page
+@model StudentEventManagement.Pages.Account.SignUpModel
+@{
+    Layout = "/Pages/Shared/_Layout_Account.cshtml";
+    ViewData["Title"] = "Sign Up";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card mt-5">
+            <div class="card-body">
+                <h2 class="card-title text-center">Create a New Account</h2>
+                <form method="post">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">First Name</label>
+                            <input asp-for="Input.FirstName" class="form-control" required />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Surname</label>
+                            <input asp-for="Input.Surname" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Mobile Number</label>
+                        <input asp-for="Input.MobileNumber" class="form-control" type="tel" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input asp-for="Input.Email" class="form-control" type="email" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        <input asp-for="Input.Username" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input asp-for="Input.Password" class="form-control" type="password" required />
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Sign Up</button>
+                    </div>
+                    <div class="text-center mt-3">
+                        <a href="/Account/Login">Already have an account? Login</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

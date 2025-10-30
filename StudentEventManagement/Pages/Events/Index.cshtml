@@ -1,0 +1,36 @@
+@page
+@model StudentEventManagement.Pages.Events.IndexModel
+
+@{
+    ViewData["Title"] = "Events";
+}
+
+<h1>Student Events</h1>
+
+@if (Model.Role == "Admin")
+{
+    <p><a href="/Events/Create">Create New Event</a></p>
+}
+
+@if (Model.Events != null && Model.Events.Any())
+{
+    <ul>
+        @foreach (var eventItem in Model.Events)
+        {
+            <li>
+                <h3>@eventItem.Title</h3>
+                <img src="@eventItem.ImageUrl" alt="Event Image" style="max-width: 300px; max-height: 300px;" />
+                <p>@eventItem.Description</p>
+                <p>Date: @eventItem.Date.ToString("yyyy-MM-dd HH:mm")</p>
+                <p>Created by: @eventItem.CreatedBy</p>
+                <a href="/Events/Details?id=@eventItem.Id">Details</a>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No events available.</p>
+}
+
+<p><a href="/Index">Back to Home</a></p>

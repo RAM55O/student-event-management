@@ -1,0 +1,127 @@
+@page
+@model StudentEventManagement.Pages.Admin.StudentManagementModel
+@{
+    ViewData["Title"] = "Student Management";
+}
+
+<h1>Student Management</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Events</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td>@user.Username</td>
+                <td>
+                    @if (Model.UserEvents.ContainsKey(user.Id) && Model.UserEvents[user.Id].Any())
+                    {
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Event Title</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var ep in Model.UserEvents[user.Id])
+                                {
+                                    <tr>
+                                        <td>@ep.Event.Title</td>
+                                        <td>@ep.Status</td>
+                                        <td>
+                                            @if (ep.Status == "Joined")
+                                            {
+                                                <form method="post" asp-page-handler="ApproveJoin" style="display:inline;">
+                                                    <input type="hidden" name="userId" value="@user.Id" />
+                                                    <input type="hidden" name="eventId" value="@ep.EventId" />
+                                                    <button type="submit" class="btn btn-success btn-sm">Approve Join</button>
+                                                </form>
+                                            }
+                                            @if (ep.Status == "Join Approved")
+                                            {
+                                                <form method="post" asp-page-handler="AdminParticipateEvent" style="display:inline;">
+                                                    <input type="hidden" name="userId" value="@user.Id" />
+                                                    <input type="hidden" name="eventId" value="@ep.EventId" />
+                                                    <button type="submit" class="btn btn-primary btn-sm">Mark as Participated</button>
+                                                </form>
+                                            }
+                                            @if (ep.Status == "Participated")
+                                            {
+                                                <form method="post" asp-page-handler="ApproveParticipate" style="display:inline;">
+                                                    <input type="hidden" name="userId" value="@user.Id" />
+                                                    <input type="hidden" name="eventId" value="@ep.EventId" />
+                                                    <button type="submit" class="btn btn-primary btn-sm">Approve Participate</button>
+                                                </form>
+                                            }
+                                            @if (ep.Status == "Certificate Requested")
+                                            {
+                                                <form method="post" asp-page-handler="ApproveCertificate" style="display:inline;">
+                                                    <input type="hidden" name="userId" value="@user.Id" />
+                                                    <input type="hidden" name="eventId" value="@ep.EventId" />
+                                                    <button type="submit" class="btn btn-info btn-sm">Approve Certificate</button>
+                                                </form>
+                                                <form method="post" asp-page-handler="DeclineCertificate" style="display:inline;">
+                                                    <input type="hidden" name="userId" value="@user.Id" />
+                                                    <input type="hidden" name="eventId" value="@ep.EventId" />
+                                                    <button type="submit" class="btn btn-warning btn-sm">Decline Certificate</button>
+                                                </form>
+                                            }
+                                            @if (ep.Status == "Certificate Approved")
+                                            {
+                                                <form method="post" asp-page-handler="IssueCertificate" style="display:inline;">
+                                                    <input type="hidden" name="userId" value="@user.Id" />
+                                                    <input type="hidden" name="eventId" value="@ep.EventId" />
+                                                    <button type="submit" class="btn btn-dark btn-sm">Issue Certificate</button>
+                                                </form>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <form method="post" asp-page-handler="AdminJoinEvent" style="display:inline-block; margin-top: 10px;">
+                            <input type="hidden" name="userId" value="@user.Id" />
+                            <select name="eventId" class="form-control-sm">
+                                <option value="0">Select event to join</option>
+                                @foreach(var ev in Model.AllEvents)
+                                {
+                                    <option value="@ev.Id">@ev.Title</option>
+                                }
+                            </select>
+                            <button type="submit" class="btn btn-info btn-sm">Join Event</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <span>No events.</span>
+                        <form method="post" asp-page-handler="AdminJoinEvent" style="display:inline-block; margin-top: 10px;">
+                            <input type="hidden" name="userId" value="@user.Id" />
+                            <select name="eventId" class="form-control-sm">
+                                <option value="0">Select event to join</option>
+                                @foreach(var ev in Model.AllEvents)
+                                {
+                                    <option value="@ev.Id">@ev.Title</option>
+                                }
+                            </select>
+                            <button type="submit" class="btn btn-info btn-sm">Join Event</button>
+                        </form>
+                    }
+                </td>
+                <td>
+                    <form method="post" asp-page-handler="DeleteUser" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                        <input type="hidden" name="userId" value="@user.Id" />
+                        <button type="submit" class="btn btn-danger">Delete User</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

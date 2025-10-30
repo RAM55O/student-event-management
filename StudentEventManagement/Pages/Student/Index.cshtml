@@ -1,0 +1,72 @@
+@page
+@model StudentEventManagement.Pages.Student.IndexModel
+
+@{
+    ViewData["Title"] = "Events";
+    Layout = "~/Pages/Shared/_Layout_Student.cshtml";
+}
+
+<h1>Events</h1>
+
+@if (Model.Events != null && Model.Events.Any())
+{
+    <div class="row">
+        @foreach (var eventItem in Model.Events)
+        {
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="event-card">
+                    <h3>@eventItem.Title</h3>
+                    <span class="event-date">@eventItem.Date.ToString("yyyy-MM-dd HH:mm")</span>
+                    <p>
+                        @if (eventItem.Description.Length > 100)
+                        {
+                            @eventItem.Description.Substring(0, 100)
+                            <span id="dots-@eventItem.Id">...</span>
+                            <span id="more-@eventItem.Id" style="display: none;">
+                                @eventItem.Description.Substring(100)
+                            </span>
+                        }
+                        else
+                        {
+                            @eventItem.Description
+                        }
+                    </p>
+                    <button onclick="toggleDetails('@eventItem.Id')" id="btn-@eventItem.Id" class="btn btn-info">More Details</button>
+                    <div id="details-@eventItem.Id" class="event-details">
+                        <p>@eventItem.Description</p>
+                    </div>
+                    @{
+                        var userParticipation = Model.UserEventParticipants.FirstOrDefault(ep => ep.EventId == eventItem.Id);
+                    }
+
+                    @if (userParticipation == null)
+                    {
+                        <form method="post" asp-page-handler="Join">
+                            <input type="hidden" name="eventId" value="@eventItem.Id" />
+                            <button type="submit" class="btn btn-primary">Join Event</button>
+                        </form>
+                    }
+                    else
+                    {
+                        @if (userParticipation.Status == "Joined")
+                        {
+                            <button disabled class="btn btn-secondary">Joined</button>
+                            <form method="post" asp-page-handler="Participate" style="display:inline;">
+                                <input type="hidden" name="eventId" value="@eventItem.Id" />
+                                <button type="submit" class="btn btn-success">Participate Event</button>
+                            </form>
+                        }
+                        else if (userParticipation.Status == "Participated")
+                        {
+                            <button disabled class="btn btn-info">Participated</button>
+                        }
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>No events available.</p>
+}

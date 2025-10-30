@@ -1,0 +1,46 @@
+@page "{id:int}"
+@model StudentEventManagement.Pages.Events.DetailsModel
+
+@{
+    ViewData["Title"] = Model.Event.Title;
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            @if (!string.IsNullOrEmpty(Model.Event.ImageUrl))
+            {
+                <img src="@Model.Event.ImageUrl" class="img-fluid rounded mb-4" alt="@Model.Event.Title">
+            }
+            
+            <h1 class="display-4">@Model.Event.Title</h1>
+            
+            <p class="lead">@Model.Event.Description</p>
+            
+            <div class="my-4">
+                <strong>Date:</strong> @Model.Event.Date.ToString("dddd, MMMM dd, yyyy")<br>
+                <strong>Time:</strong> @Model.Event.Date.ToString("h:mm tt")<br>
+                <strong>Organizer:</strong> @Model.Event.Creator?.FirstName @Model.Event.Creator?.Surname
+            </div>
+
+            @if (Model.Event.EventCategories.Any())
+            {
+                <div class="my-4">
+                    <strong>Categories:</strong>
+                    @foreach (var ec in Model.Event.EventCategories)
+                    {
+                        <span class="badge badge-primary">@ec.Category.Name</span>
+                    }
+                </div>
+            }
+
+            <div class="my-4">
+                <a href="#" class="btn btn-success btn-lg">Register for this Event</a>
+            </div>
+
+            <div>
+                <a asp-page="/EventHome">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>

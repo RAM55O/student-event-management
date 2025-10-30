@@ -1,0 +1,56 @@
+@page
+@model StudentEventManagement.Pages.Admin.IndexModel
+
+@{
+    ViewData["Title"] = "Admin - Events";
+}
+
+<h1>Events</h1>
+
+
+
+<div class="mb-3">
+    <a asp-page="Create" class="btn btn-primary">Create New Event</a>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Events[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Events[0].Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Events[0].Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Events[0].CreatedBy)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Events) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedBy)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,43 @@
+@page
+@model StudentEventManagement.Pages.Admin.FeedbackAnalysisModel
+
+@{
+    ViewData["Title"] = "Feedback Analysis";
+}
+
+<h1>Feedback Analysis</h1>
+
+@if (Model.FeedbackByEvent != null && Model.FeedbackByEvent.Any())
+{
+    @foreach (var eventFeedback in Model.FeedbackByEvent)
+    {
+        <h3>@eventFeedback.Key.Title</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>User</th>
+                    <th>Rating</th>
+                    <th>Improve Suggestion</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in eventFeedback.Value)
+                {
+                    <tr>
+                        <td>@item.Timestamp.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>@item.User?.Username</td>
+                        <td>@item.Rating</td>
+                        <td>@item.ImproveSuggestion</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+else
+{
+    <p>No feedback submitted yet.</p>
+}
+
+<p><a href="/Admin/Index" class="btn btn-secondary">Back to Admin Home</a></p>

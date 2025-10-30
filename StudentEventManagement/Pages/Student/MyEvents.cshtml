@@ -1,0 +1,37 @@
+@page
+@model StudentEventManagement.Pages.Student.MyEventsModel
+
+@{
+    ViewData["Title"] = "My Events";
+}
+
+<h1>My Events</h1>
+
+@if (Model.MyParticipations != null && Model.MyParticipations.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Event Title</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.MyParticipations)
+            {
+                <tr>
+                    <td>@item.EventTitle</td>
+                    <td>@item.EventDate.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>@item.Status</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>You have not joined or participated in any events yet.</p>
+}
+
+<p><a href="/Student/Index" class="btn btn-secondary">Back to Event List</a></p>

@@ -1,0 +1,37 @@
+@page
+@model StudentEventManagement.Pages.Admin.AnalysisModel
+
+@{
+    ViewData["Title"] = "Event Participation Analysis";
+}
+
+<h1>Event Participation Analysis</h1>
+
+@if (Model.EventParticipation != null && Model.EventParticipation.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Event Title</th>
+                <th>User Name</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.EventParticipation)
+            {
+                <tr>
+                    <td>@item.EventTitle</td>
+                    <td>@item.UserName</td>
+                    <td>@item.Status</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No event participation data available.</p>
+}
+
+<p><a href="/Admin/Index" class="btn btn-secondary">Back to Admin Home</a></p>

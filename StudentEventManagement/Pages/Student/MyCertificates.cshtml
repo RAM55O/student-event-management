@@ -1,0 +1,44 @@
+@page
+@model StudentEventManagement.Pages.Student.MyCertificatesModel
+@{
+    ViewData["Title"] = "My Certificates";
+}
+
+<h1>My Certificates</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Event</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var participation in Model.Participations)
+        {
+            <tr>
+                <td>@participation.Event.Title</td>
+                <td>@participation.Status</td>
+                <td>
+                    @if (participation.Status == "Participation Approved")
+                    {
+                        <form method="post" asp-page-handler="RequestCertificate">
+                            <input type="hidden" name="eventId" value="@participation.EventId" />
+                            <button type="submit" class="btn btn-primary">Request Certificate</button>
+                        </form>
+                    }
+                    @if (participation.Status == "Certificate Issued")
+                    {
+                        <a asp-page="/Student/Certificate" asp-route-userId="@participation.UserId" asp-route-eventId="@participation.EventId" class="btn btn-success" target="_blank">View Certificate</a>
+                    }
+                    @if (participation.Status == "Certificate Declined")
+                    {
+                        <span>Your request was declined.</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<p><a href="/Student/Index" class="btn btn-secondary">Back to Student Home</a></p>
